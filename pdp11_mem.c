@@ -7,7 +7,7 @@ typedef  unsigned short int word;    // 16 bit
 typedef   word adr;  // 16 bit
 
 
-#define ABC
+//#define ABC
 
 #define MEMSIZE (64*1024)
 
@@ -42,7 +42,7 @@ void test_mem(){
 	assert(wres == w);
 	
 	// пишу слово, читаю слово
-	adr a = 4;
+	a = 4;
 	word w0 = 0xabba;
 	w_write(a, w0);
 	wres = w_read(a);
@@ -63,12 +63,12 @@ void test_mem(){
 }
 
 
-
+void load_file();
 
 
 int main() {
-	test_mem();
-	
+	//test_mem();
+	load_file();
 	
 	return 0;
 }
@@ -100,3 +100,26 @@ byte b_read(adr a){
 	return mem[a];
 }
 
+
+
+void load_file(){
+	adr a;
+	int n, i;
+	while(feof(stdin) != 1){
+		fscanf(stdin, "%hx", &a);
+		fscanf(stdin, "%x", &n);
+		for(i = 0; i < n; i++){
+			fscanf(stdin, "%hhx", &mem[a + i]);
+		}
+	}
+
+}
+
+
+void mem_dump(adr start, word n){
+	word w;
+	for(int i = 0; i < n; i += 2){
+		w = w_read(start + i);
+		printf("%06o : %06o\n", start + i, w);
+	}
+}
