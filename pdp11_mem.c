@@ -80,14 +80,15 @@ int main() {
 
 
 void w_write(adr a, word w){
-	//assert(a % 2 == 0);
+	assert(a % 2 == 0);
 	mem[a] = (byte)((w << 8) >> 8);
 	mem[a + 1] = (byte)(w >> 8);    // w only unsigned
 }
 
 
 word w_read(adr a){
-	word w = ((word)mem[a + 1]) << 8; // must be (a % 2 == 0)
+	assert(a % 2 == 0);
+	word w = ((word)mem[a + 1]) << 8; 
 	w = w | mem[a];
 	return w;
 	
