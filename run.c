@@ -1,7 +1,7 @@
 #include "pdp.h"
 #include <stdio.h>
 
-
+#define com_num 3
 
 typedef struct {
 	word mask;
@@ -25,7 +25,7 @@ void run(){
 		word w = w_read(pc);
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
-		for(i = 0; i < 3; i++){
+		for(i = 0; i < com_num; i++){
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				puts(cmd[i].name);
 				cmd[i].do_func();
