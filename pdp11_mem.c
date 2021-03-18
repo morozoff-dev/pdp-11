@@ -1,14 +1,18 @@
 #include "pdp.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 
 byte mem[MEMSIZE];
+word reg[8];
 
 
 
 int main() {
 	test_mem();
-	
+	word w = 0000000;
+	w_write(01000, w);
+	run();
 	
 	return 0;
 }
