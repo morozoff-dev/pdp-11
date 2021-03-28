@@ -1,22 +1,62 @@
 #include "pdp.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-#define com_num 3
+#define NO_PARAMS 0
+#define HAS_DD 1
+#define HAS_SS 2
 
-typedef struct {
-	word mask;
-	word opcode;
-	char * name;
-	void (*do_func)(void);
-	
-} Command;
+int cmd_size();
+
 
 Command cmd[] = {
-	{0170000, 0010000, "mov", do_mov},
-	{0170000, 0060000, "add", do_add},
-	{0170000, 0000000, "halt", do_halt}
+	{0170000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
+	{0170000, 0060000, "add", do_add, HAS_DD | HAS_SS},
+	{0170000, 0000000, "halt", do_halt, NO_PARAMS}
 	
 };
+
+Arg ss, dd;
+
+
+Arg get_mr(word w){
+	Arg res;
+	int r = w & 7;
+	int mode = (w >> 3) & 7;
+	switch(mode) {
+		case 0:   // R3
+			res.adr = r;
+			res.val = reg[r];
+			printf("R%o ", r);
+			break;
+		case 1:   // (R3)
+			res.adr = reg[r];
+			res.val = w_read(res.adr);
+			printf("(R%o) ", r);
+			break;
+			
+		case 2:   // (R3)+     #3
+			res.adr = reg[r];
+			res.val = w_read(res.adr);
+			reg[r] += 2;
+			if(r == 7){
+				printf("#%o ", res.val);
+			}
+			else {
+				printf("(R%o)+ ", r);
+			}
+			break;
+		default: 
+			fprintf(stderr, "Mode %o NOT IMPLEMENTED YET!\n", mode);
+			exit(1);
+		
+	}
+	
+	return res;
+}
+
+
+
 
 void run(){
 	pc = 01000;
@@ -25,16 +65,39 @@ void run(){
 		word w = w_read(pc);
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
-		for(i = 0; i < com_num; i++){
+		
+		for(i = 0; i <= cmd_size(); i++){
+			
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				puts(cmd[i].name);
+				if(cmd[i].params & HAS_SS == HAS_SS){
+					ss = get_mr(w >> 6);
+				}
+				if(cmd[i].params & HAS_DD == HAS_DD){
+					dd = get_mr(w);
+				}
 				cmd[i].do_func();
 			}
 			else if (i == 2){
 				printf("unknown\n");
 			}
+			
 		}
 		
 	}
 	
+}
+
+
+
+int cmd_size(){
+	int i = 0;
+	while(1){
+		if(cmd[i].opcode == 0000000){
+			break;
+		}
+		i++;
+	}
+	
+	return i;
 }
