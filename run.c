@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 #define NO_PARAMS 0
 #define HAS_DD 1
 #define HAS_SS 2
 
-int cmd_size();
 
 
 Command cmd[] = {
@@ -66,7 +66,7 @@ void run(){
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
 		
-		for(i = 0; i <= cmd_size(); i++){
+		for(i = 0; 1; i++) {
 			
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				puts(cmd[i].name);
@@ -78,26 +78,13 @@ void run(){
 				}
 				cmd[i].do_func();
 			}
-			else if (i == 2){
+			else if ( cmd[i].opcode == 0000000){
 				printf("unknown\n");
+				break;
 			}
-			
+		
 		}
 		
 	}
 	
-}
-
-
-
-int cmd_size(){
-	int i = 0;
-	while(1){
-		if(cmd[i].opcode == 0000000){
-			break;
-		}
-		i++;
-	}
-	
-	return i;
 }
