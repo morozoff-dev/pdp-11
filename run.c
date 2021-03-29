@@ -9,10 +9,11 @@
 
 
 
+
 Command cmd[] = {
 	{0170000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
 	{0170000, 0060000, "add", do_add, HAS_DD | HAS_SS},
-	{0170000, 0000000, "halt", do_halt, NO_PARAMS}
+	{0177777, 0000000, "halt", do_halt, NO_PARAMS}
 	
 };
 
@@ -65,7 +66,7 @@ void run(){
 		word w = w_read(pc);
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
-		
+		 
 		for(i = 0; 1; i++) {
 			
 			if((w & cmd[i].mask) == cmd[i].opcode){
