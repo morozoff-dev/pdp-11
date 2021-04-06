@@ -8,8 +8,6 @@
 #define HAS_SS 2
 
 
-word w;
-
 
 Command cmd[] = {
 	{0170000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
@@ -29,17 +27,21 @@ Arg get_mr(word w){
 		case 0:   // R3
 			res.adr = r;
 			res.val = reg[r];
+			res.where = "reg";
 			printf("R%o ", r);
 			break;
 		case 1:   // (R3)
 			res.adr = reg[r];
 			res.val = w_read(res.adr);
+			res.where = "mem";
 			printf("(R%o) ", r);
+			
 			break;
 			
 		case 2:   // (R3)+     #3
 			res.adr = reg[r];
 			res.val = w_read(res.adr);
+			res.where = "mem";
 			reg[r] += 2;
 			if(r == 7){
 				printf("#%o ", res.val);
@@ -47,6 +49,7 @@ Arg get_mr(word w){
 			else {
 				printf("(R%o)+ ", r);
 			}
+
 			break;
 		default: 
 			fprintf(stderr, "Mode %o NOT IMPLEMENTED YET!\n", mode);
@@ -64,7 +67,7 @@ void run(){
 	pc = 01000;
 	int i;
 	while(1){
-		w = w_read(pc);
+		word w = w_read(pc);
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
 		 

@@ -1,11 +1,9 @@
 #include "pdp.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-
-extern word w;
-
-
+#define MOD 65536
 
 void do_halt(){
 	printf("THE END!!!\n");
@@ -18,11 +16,11 @@ void do_mov(){
 }
  
 void do_add(){
-	if((w >> 3) & 7 == 0){
-		reg[dd.adr] = dd.val + ss.val;
+	if(strcmp(dd.where, "reg") == 0){
+		reg[dd.adr] = (dd.val + ss.val) % MOD;
 	}
 	else {
-	w_write(dd.adr, dd.val + ss.val);
+	w_write(dd.adr, (dd.val + ss.val)% MOD);
 	}
 }
 
