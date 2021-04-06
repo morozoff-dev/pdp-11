@@ -8,6 +8,7 @@
 #define HAS_SS 2
 
 
+word w;
 
 
 Command cmd[] = {
@@ -63,7 +64,7 @@ void run(){
 	pc = 01000;
 	int i;
 	while(1){
-		word w = w_read(pc);
+		w = w_read(pc);
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
 		 
@@ -79,7 +80,7 @@ void run(){
 				}
 				cmd[i].do_func();
 			}
-			else if ( cmd[i].opcode == 0000000){
+			else if (cmd[i].opcode == 0000000){
 				printf("unknown\n");
 				break;
 			}
