@@ -12,7 +12,12 @@ void do_halt(){
 }
 
 void do_mov(){
+	if(strcmp(dd.where, "reg") == 0){
 	reg[dd.adr] = ss.val;
+	} 
+	else {
+		w_write(dd.adr, ss.val);
+	}
 }
  
 void do_add(){
