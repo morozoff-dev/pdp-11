@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MOD 65536
+#define MOD 01000000
 
 void do_halt(){
 	printf("THE END!!!\n");
@@ -12,7 +12,7 @@ void do_halt(){
 }
 
 void do_mov(){
-	if(strcmp(dd.where, "reg") == 0){
+	if(dd.where == REG){
 	reg[dd.adr] = ss.val;
 	} 
 	else {
@@ -21,7 +21,7 @@ void do_mov(){
 }
  
 void do_add(){
-	if(strcmp(dd.where, "reg") == 0){
+	if(dd.where == REG){
 		reg[dd.adr] = (dd.val + ss.val) % MOD;
 	}
 	else {

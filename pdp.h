@@ -17,11 +17,15 @@ typedef struct {
 typedef struct{
 	word val;  // значение аргумента 
 	word adr;  // адрес аргумента
+	int where; // куда писать: в reg или mem
 	
 } Arg;
 
 #define MEMSIZE (64*1024)
 #define pc reg[7]
+
+#define REG 0
+#define MEM 1
 
 
 extern byte mem[MEMSIZE];

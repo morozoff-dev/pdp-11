@@ -23,17 +23,21 @@ Arg get_mr(word w){
 	Arg res;
 	int r = w & 7;
 	int mode = (w >> 3) & 7;
+	if(mode == 0) {
+		res.where = REG;
+	}
+	else {
+		res.where = MEM;
+	}
 	switch(mode) {
 		case 0:   // R3
 			res.adr = r;
 			res.val = reg[r];
-			res.where = "reg";
 			printf("R%o ", r);
 			break;
 		case 1:   // (R3)
 			res.adr = reg[r];
 			res.val = w_read(res.adr);
-			res.where = "mem";
 			printf("(R%o) ", r);
 			
 			break;
@@ -41,7 +45,6 @@ Arg get_mr(word w){
 		case 2:   // (R3)+     #3
 			res.adr = reg[r];
 			res.val = w_read(res.adr);
-			res.where = "mem";
 			reg[r] += 2;
 			if(r == 7){
 				printf("#%o ", res.val);
