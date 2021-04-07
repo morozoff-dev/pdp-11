@@ -12,7 +12,8 @@
 Command cmd[] = {
 	{0170000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
 	{0170000, 0060000, "add", do_add, HAS_DD | HAS_SS},
-	{0177777, 0000000, "halt", do_halt, NO_PARAMS}
+	{0177777, 0000000, "halt", do_halt, NO_PARAMS},
+	{0000000, 0000000, "unknown", do_nothing, NO_PARAMS}
 	
 };
 
@@ -29,6 +30,7 @@ Arg get_mr(word w){
 	else {
 		res.where = MEM;
 	}
+	
 	switch(mode) {
 		case 0:   // R3
 			res.adr = r;
@@ -74,10 +76,10 @@ void run(){
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
 		 
-		for(i = 0; 1; i++) {
+		for(i = 0; ; i++) {
 			
 			if((w & cmd[i].mask) == cmd[i].opcode){
-				puts(cmd[i].name);
+				printf("%s ", cmd[i].name);
 				if(cmd[i].params & HAS_SS == HAS_SS){
 					ss = get_mr(w >> 6);
 				}
@@ -85,11 +87,10 @@ void run(){
 					dd = get_mr(w);
 				}
 				cmd[i].do_func();
-			}
-			else if (cmd[i].opcode == 0000000){
-				printf("unknown\n");
+				printf("\n");
 				break;
 			}
+		
 		
 		}
 		

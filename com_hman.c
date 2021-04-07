@@ -33,7 +33,6 @@ void do_nothing(){
 	
 }
 
-
 void reg_print(){
 	int i;
 	printf("Registers: \n");
