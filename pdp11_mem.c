@@ -8,26 +8,28 @@ word reg[8];
 
 
 
-int main() {
+int main(int argc, char * argv[]) {
 	test_mem();
-	word w = 0000000;
-	w_write(01000, w);
+	
+	load_file(argv[1]);
 	run();
 	
 	return 0;
 }
 
 
-void load_file(){
+void load_file(char * f){
+	FILE * fin  = fopen(f, "r");
 	adr a;
 	int n, i;
-	while(feof(stdin) != 1){
-		fscanf(stdin, "%hx", &a);
-		fscanf(stdin, "%x", &n);
+	while(feof(fin) != 1){
+		fscanf(fin, "%hx", &a);
+		fscanf(fin, "%x", &n);
 		for(i = 0; i < n; i++){
-			fscanf(stdin, "%hhx", &mem[a + i]);
+			fscanf(fin, "%hhx", &mem[a + i]);
 		}
 	}
+	fclose(fin);
 
 }
 
