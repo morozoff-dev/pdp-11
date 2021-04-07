@@ -6,19 +6,21 @@
 #define NO_PARAMS 0
 #define HAS_DD 1
 #define HAS_SS 2
-
-
+#define HAS_NN 4
+#define HAS_R  8
 
 Command cmd[] = {
 	{0170000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
 	{0170000, 0060000, "add", do_add, HAS_DD | HAS_SS},
 	{0177777, 0000000, "halt", do_halt, NO_PARAMS},
+	{0177000, 0077000, "sob", do_sob,  HAS_R | HAS_NN},
+	{0077700, 0005000, "clr", do_clr, HAS_DD},
 	{0000000, 0000000, "unknown", do_nothing, NO_PARAMS}
 	
 };
 
 Arg ss, dd;
-
+int NN, R;
 
 Arg get_mr(word w){
 	Arg res;
@@ -67,6 +69,20 @@ Arg get_mr(word w){
 
 
 
+int get_R(word w){
+	int res;
+    res = (w >> 6) & 7;
+	printf("R%d ", res);
+	return res;
+	
+}
+
+int get_NN(word w){
+	int res;
+	res = w & 0000077;
+	printf("%o ", pc - res * 2);
+	return res;
+}
 
 void run(){
 	pc = 01000;
@@ -80,12 +96,20 @@ void run(){
 			
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				printf("%s ", cmd[i].name);
+				
 				if(cmd[i].params & HAS_SS == HAS_SS){
 					ss = get_mr(w >> 6);
 				}
 				if(cmd[i].params & HAS_DD == HAS_DD){
 					dd = get_mr(w);
 				}
+				if(cmd[i].params & HAS_R == HAS_R){
+					R = get_R(w);
+				}
+				if(cmd[i].params & HAS_NN == HAS_NN){
+					NN = get_NN(w);
+				}
+				
 				cmd[i].do_func();
 				printf("\n");
 				break;

@@ -32,6 +32,7 @@ extern byte mem[MEMSIZE];
 extern word reg[8];
 
 extern Arg ss, dd;
+extern int NN, R;
 
 void b_write(adr a, byte b);
 byte b_read(adr a);
@@ -47,6 +48,8 @@ void do_halt();
 void do_mov();
 void do_add();
 void do_nothing();
+void do_sob();
+void do_clr();
 void run();
 
 void reg_print();

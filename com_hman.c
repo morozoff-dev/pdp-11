@@ -5,11 +5,13 @@
 
 #define MOD 01000000
 
+
 void do_halt(){
 	printf("THE END!!!\n");
 	reg_print();
 	exit(0);
 }
+
 
 void do_mov(){
 	if(dd.where == REG){
@@ -20,6 +22,7 @@ void do_mov(){
 	}
 }
  
+ 
 void do_add(){
 	if(dd.where == REG){
 		reg[dd.adr] = (dd.val + ss.val) % MOD;
@@ -29,9 +32,31 @@ void do_add(){
 	}
 }
 
+
 void do_nothing(){
 	
 }
+
+
+void do_sob(){
+	reg[R] = reg[R] - 1;
+	if (reg[R] != 0){
+		pc = pc - NN * 2;
+	}
+	
+}
+
+void do_clr(){
+	if(dd.where == REG){
+		reg[dd.adr] = 0;
+	}
+	else {
+		w_write(dd.adr, 0);
+	}
+}
+
+
+
 
 void reg_print(){
 	int i;
