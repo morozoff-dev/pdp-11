@@ -27,14 +27,14 @@ Arg get_mr(word w){
 			break;
 		case 1:   // (R3)
 			res.adr = reg[r];
-			res.val = w_read(res.adr);
+			res.val = w_read(res.adr, res.where);
 			printf("(R%o) ", r);
 			
 			break;
 			
 		case 2:   // (R3)+     #3
 			res.adr = reg[r];
-			res.val = w_read(res.adr);
+			res.val = w_read(res.adr, res.where);
 			reg[r] += 2;
 			if(r == 7){
 				printf("#%o ", res.val);
@@ -74,7 +74,7 @@ void run(){
 	pc = 01000;
 	int i;
 	while(1){
-		word w = w_read(pc);
+		word w = w_read(pc, MEM);
 		printf("%06o %06o: ", pc, w);
 		pc += 2;
 		 
@@ -83,16 +83,16 @@ void run(){
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				printf("%s ", cmd[i].name);
 				
-				if((cmd[i].params & HAS_SS) == HAS_SS){
+				if(cmd[i].params & HAS_SS){
 					ss = get_mr(w >> 6);
 				}
-				if((cmd[i].params & HAS_DD) == HAS_DD){
+				if(cmd[i].params & HAS_DD){
 					dd = get_mr(w);
 				}
-				if((cmd[i].params & HAS_R) == HAS_R){
+				if(cmd[i].params & HAS_R){
 					R = get_R(w);
 				}
-				if((cmd[i].params & HAS_NN) == HAS_NN){
+				if(cmd[i].params & HAS_NN){
 					NN = get_NN(w);
 				}
 				

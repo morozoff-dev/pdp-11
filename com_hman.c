@@ -25,22 +25,14 @@ void do_halt(){
 
 
 void do_mov(){
-	if(dd.where == REG){
-	reg[dd.adr] = ss.val;
-	} 
-	else {
-		w_write(dd.adr, ss.val);
-	}
+	w_write(dd.adr, ss.val, dd.where);
+
 }
  
  
 void do_add(){
-	if(dd.where == REG){
-		reg[dd.adr] = (dd.val + ss.val) % MOD;
-	}
-	else {
-	w_write(dd.adr, (dd.val + ss.val)% MOD);
-	}
+	w_write(dd.adr, (dd.val + ss.val)% MOD, dd.where);
+
 }
 
 
@@ -58,12 +50,8 @@ void do_sob(){
 }
 
 void do_clr(){
-	if(dd.where == REG){
-		reg[dd.adr] = 0;
-	}
-	else {
-		w_write(dd.adr, 0);
-	}
+		w_write(dd.adr, 0, dd.where);
+		
 }
 
 

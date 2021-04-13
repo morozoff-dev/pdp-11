@@ -42,10 +42,10 @@ extern word reg[8];
 extern Arg ss, dd;
 extern int NN, R;
 
-void b_write(adr a, byte b);
-byte b_read(adr a);
-void w_write(adr a, word w);
-word w_read(adr a);
+void w_write(adr a, word w, int where);
+word w_read(adr a, int where);
+void b_write(adr a, byte b, int where);
+byte b_read(adr a, int where);
 
 void test_mem();
 

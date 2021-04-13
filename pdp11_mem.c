@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <errno.h>
 
-byte mem[MEMSIZE];
-word reg[8];
-
 
 
 int main(int argc, char * argv[]) {
@@ -18,7 +15,6 @@ int main(int argc, char * argv[]) {
 	else if (argc == 2){
 		load_file(argv[1]);
 	}
-	
 	
 	run();
 	
@@ -50,7 +46,7 @@ void load_file(char * f){
 void mem_dump(adr start, word n){
 	word w;
 	for(int i = 0; i < n; i += 2){
-		w = w_read(start + i);
+		w = w_read(start + i, MEM);
 		printf("%06o : %06o\n", start + i, w);
 	}
 }
