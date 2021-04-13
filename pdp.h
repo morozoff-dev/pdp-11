@@ -1,4 +1,6 @@
 
+#pragma once
+
 typedef  unsigned char  byte;    // 8 bit
 typedef  unsigned short int word;    // 16 bit
 typedef   word adr;  // 16 bit
@@ -26,6 +28,12 @@ typedef struct{
 
 #define REG 0
 #define MEM 1
+
+#define NO_PARAMS 0
+#define HAS_DD 1
+#define HAS_SS 2
+#define HAS_NN 4
+#define HAS_R  8
 
 
 extern byte mem[MEMSIZE];

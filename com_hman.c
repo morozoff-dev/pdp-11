@@ -6,6 +6,17 @@
 #define MOD 01000000
 
 
+Command cmd[] = {
+	{0170000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
+	{0170000, 0060000, "add", do_add, HAS_DD | HAS_SS},
+	{0177777, 0000000, "halt", do_halt, NO_PARAMS},
+	{0177000, 0077000, "sob", do_sob,  HAS_R | HAS_NN},
+	{0077700, 0005000, "clr", do_clr, HAS_DD},
+	{0000000, 0000000, "unknown", do_nothing, NO_PARAMS}
+	
+};
+
+
 void do_halt(){
 	printf("THE END!!!\n");
 	reg_print();

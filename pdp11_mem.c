@@ -1,7 +1,7 @@
 #include "pdp.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <errno.h>
 
 byte mem[MEMSIZE];
 word reg[8];
@@ -11,7 +11,15 @@ word reg[8];
 int main(int argc, char * argv[]) {
 	test_mem();
 	
-	load_file(argv[1]);
+	if(argc == 1){
+		printf("  ");
+		return 0;
+	}
+	else if (argc == 2){
+		load_file(argv[1]);
+	}
+	
+	
 	run();
 	
 	return 0;
@@ -20,6 +28,11 @@ int main(int argc, char * argv[]) {
 
 void load_file(char * f){
 	FILE * fin  = fopen(f, "r");
+	if (fin == NULL) {
+        perror(f);
+        exit(errno);
+    }
+	
 	adr a;
 	int n, i;
 	while(feof(fin) != 1){
