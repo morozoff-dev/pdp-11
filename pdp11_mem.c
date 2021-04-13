@@ -9,7 +9,7 @@ int main(int argc, char * argv[]) {
 	test_mem();
 	
 	if(argc == 1){
-		printf("  ");
+		printf("Usage: < executable file >  < input_file > \n");
 		return 0;
 	}
 	else if (argc == 2){
