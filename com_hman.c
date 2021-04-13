@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MOD 01000000
 
 
 Command cmd[] = {
@@ -31,7 +30,7 @@ void do_mov(){
  
  
 void do_add(){
-	w_write(dd.adr, (dd.val + ss.val)% MOD, dd.where);
+	w_write(dd.adr, (dd.val + ss.val) & 0xFFFF, dd.where);
 
 }
 
