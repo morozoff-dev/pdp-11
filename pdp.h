@@ -35,6 +35,9 @@ typedef struct{
 #define HAS_NN 4
 #define HAS_R  8
 
+#define B 1
+#define W 0
+
 
 extern byte mem[MEMSIZE];
 extern word reg[8];

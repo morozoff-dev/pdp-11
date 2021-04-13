@@ -7,6 +7,7 @@ extern Command cmd[];
 
 Arg ss, dd;
 int NN, R;
+int BW;
 
 Arg get_mr(word w){
 	Arg res;
@@ -27,15 +28,31 @@ Arg get_mr(word w){
 			break;
 		case 1:   // (R3)
 			res.adr = reg[r];
+			
+			if(BW == B){
+				res.val = b_read(res.adr, res.where);
+			}
+			else {
 			res.val = w_read(res.adr, res.where);
+			}
+			
 			printf("(R%o) ", r);
 			
 			break;
 			
 		case 2:   // (R3)+     #3
 			res.adr = reg[r];
+			
+			if(BW == B){
+				res.val = b_read(res.adr, res.where);
+				if(r < 6) reg[r] += 1;
+				else reg[r] += 2;
+			}
+			else {
 			res.val = w_read(res.adr, res.where);
 			reg[r] += 2;
+			}
+			
 			if(r == 7){
 				printf("#%o ", res.val);
 			}
@@ -82,7 +99,7 @@ void run(){
 			
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				printf("%s ", cmd[i].name);
-				
+				BW = w >> 15;
 				if(cmd[i].params & HAS_SS){
 					ss = get_mr(w >> 6);
 				}

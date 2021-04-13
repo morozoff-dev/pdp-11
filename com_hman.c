@@ -3,14 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+extern int BW;
 
 Command cmd[] = {
-	{0170000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
+	{0070000, 0010000, "mov", do_mov, HAS_DD | HAS_SS},
 	{0170000, 0060000, "add", do_add, HAS_DD | HAS_SS},
 	{0177777, 0000000, "halt", do_halt, NO_PARAMS},
 	{0177000, 0077000, "sob", do_sob,  HAS_R | HAS_NN},
 	{0077700, 0005000, "clr", do_clr, HAS_DD},
+	//{0170000, 0110000, "movb", do_movb, HAS_DD | HAS_SS},
 	{0000000, 0000000, "unknown", do_nothing, NO_PARAMS}
 	
 };
@@ -24,7 +25,14 @@ void do_halt(){
 
 
 void do_mov(){
+	if(BW == B){
+		int zn = (ss.val >> 7);
+		if((dd.where == REG) && (zn == 1)) w_write(dd.adr, ss.val | 0177777, dd.where);
+		else b_write(dd.adr, ss.val, dd.where);
+	}
+	else {
 	w_write(dd.adr, ss.val, dd.where);
+	}
 
 }
  
@@ -52,6 +60,11 @@ void do_clr(){
 		w_write(dd.adr, 0, dd.where);
 		
 }
+
+//void do_movb(){
+//	b_write(dd.adr, ss.val, dd.where);
+//	
+//}
 
 
 
