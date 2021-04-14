@@ -59,6 +59,20 @@ Arg get_mr(word w){
 			else {
 				printf("(R%o)+ ", r);
 			}
+			break;
+		case 3:
+			res.adr = w_read(reg[r], res.where);
+			
+			if(BW == B) res.val = b_read(res.adr, res.where);
+			else res.val = w_read(res.adr, res.where);
+			
+			reg[r] += 2;
+			if(r == 7) {
+				printf("@#%o ", res.adr);
+			}
+			else {
+				printf("@(R%o)+ ", r);
+			}
 
 			break;
 		default: 
