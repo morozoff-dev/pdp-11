@@ -27,7 +27,7 @@ void do_halt(){
 void do_mov(){
 	if(BW == B){
 		int zn = (ss.val >> 7);
-		if((dd.where == REG) && (zn == 1)) w_write(dd.adr, ss.val | 0177777, dd.where);
+		if((dd.where == REG) && (zn == 1)) w_write(dd.adr, ss.val | 0xFF00, dd.where);
 		else b_write(dd.adr, ss.val, dd.where);
 	}
 	else {
