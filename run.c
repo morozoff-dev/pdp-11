@@ -7,7 +7,7 @@ extern Command cmd[];
 
 Arg ss, dd;
 int NN, R;
-int BW;
+int BW = W;     // байт или слово
 
 Arg get_mr(word w){
 	Arg res;
@@ -101,6 +101,8 @@ int get_NN(word w){
 	return res;
 }
 
+
+
 void run(){
 	pc = 01000;
 	int i;
@@ -113,7 +115,9 @@ void run(){
 			
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				printf("%s ", cmd[i].name);
+				if(cmd[i].params & HAS_BW){
 				BW = w >> 15;
+				}
 				if(cmd[i].params & HAS_SS){
 					ss = get_mr(w >> 6);
 				}

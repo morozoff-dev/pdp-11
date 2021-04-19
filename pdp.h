@@ -34,6 +34,7 @@ typedef struct{
 #define HAS_SS 2
 #define HAS_NN 4
 #define HAS_R  8
+#define HAS_BW 16
 
 #define B 1
 #define W 0
