@@ -64,4 +64,16 @@ void do_sob();
 void do_clr();
 void run();
 
+void do_scc();
+void do_sec();
+void do_sen();
+void do_sez();
+void do_sev();
+void do_ccc();
+void do_clc();
+void do_cln();
+void do_clz();
+void do_clv();
+void do_nop();
+
 void reg_print();

@@ -8,16 +8,32 @@ extern int BW;
 int flag_N;
 int flag_Z;
 int flag_C;
+int flag_V;
 
 
 
 Command cmd[] = {
-	{0070000, 0010000, "mov", do_mov, HAS_DD | HAS_SS | HAS_BW},
-	{0170000, 0060000, "add", do_add, HAS_DD | HAS_SS},
-	{0177777, 0000000, "halt", do_halt, NO_PARAMS},
-	{0177000, 0077000, "sob", do_sob,  HAS_R | HAS_NN},
-	{0077700, 0005000, "clr", do_clr, HAS_DD | HAS_BW},
-	{0000000, 0000000, "unknown", do_nothing, NO_PARAMS}
+	{0070000, 0010000, "MOV", do_mov, HAS_DD | HAS_SS | HAS_BW},
+	{0170000, 0060000, "ADD", do_add, HAS_DD | HAS_SS},
+	{0177777, 0000000, "HALT", do_halt, NO_PARAMS},
+	{0177000, 0077000, "SOB", do_sob,  HAS_R | HAS_NN},
+	{0077700, 0005000, "CLR", do_clr, HAS_DD | HAS_BW},
+	
+	{0000777, 0000277, "SCC", do_scc, NO_PARAMS},
+	{0000777, 0000261, "SEC", do_sec, NO_PARAMS},
+	{0000777, 0000270, "SEN", do_sen, NO_PARAMS},
+	{0000777, 0000264, "SEZ", do_sez, NO_PARAMS},
+	{0000777, 0000262, "SEV", do_sev, NO_PARAMS},
+	
+	{0000777, 0000257, "CCC", do_ccc, NO_PARAMS},
+	{0000777, 0000241, "CLC", do_clc, NO_PARAMS},
+	{0000777, 0000250, "CLN", do_cln, NO_PARAMS},
+	{0000777, 0000244, "CLZ", do_clz, NO_PARAMS},
+	{0000777, 0000242, "CLV", do_clv, NO_PARAMS},
+	
+	{0000777, 0000240, "NOP", do_nop, NO_PARAMS},
+	
+	{0000000, 0000000, "UNKNOWN", do_nothing, NO_PARAMS}
 	
 };
 
@@ -73,6 +89,65 @@ void do_clr(){
 }
 
 
+
+void do_scc() {
+	flag_N = flag_Z = flag_C = flag_V = 1;
+	
+}
+
+void do_sec() {
+	flag_C = 1;
+	
+}
+
+void do_sen() {
+	flag_N = 1;
+	
+}
+
+void do_sez() {
+	flag_Z = 1;
+	
+}
+
+void do_sev() {
+	flag_V = 1;
+	
+}
+
+
+void do_ccc() {
+	flag_N = flag_Z = flag_C = flag_V = 0;
+		
+}
+
+void do_clc() {
+    flag_C = 0;
+		
+}
+
+void do_cln() {
+    flag_N = 0;
+		
+}
+
+void do_clz() {
+    flag_Z = 0;
+		
+}
+
+void do_clv() {
+    flag_V = 0;
+		
+}
+
+
+void do_nop() {
+	
+}
+
+
+
 void reg_print(){
 	int i;
 	printf("Registers: \n");
@@ -100,4 +175,3 @@ void set_NZ(word w){
 	}
 	
 }
-
