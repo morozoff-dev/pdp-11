@@ -6,7 +6,7 @@
 extern Command cmd[];
 
 Arg ss, dd;
-int NN, R;
+int NN, R, XX;
 int BW = W;     // байт или слово
 
 Arg get_mr(word w){
@@ -102,6 +102,17 @@ int get_NN(word w){
 }
 
 
+int get_XX(word w){
+	int res;
+	res = (byte)(w & 0377);
+	if((res >> 7) & 1){
+		res = res - 000400;
+	}
+	printf("%06o ", pc + res * 2);
+	
+	return res;
+}
+
 
 void run(){
 	pc = 01000;
@@ -129,6 +140,9 @@ void run(){
 				}
 				if(cmd[i].params & HAS_NN){
 					NN = get_NN(w);
+				}
+				if(cmd[i].params & HAS_XX){
+					XX = get_XX(w);
 				}
 				
 				cmd[i].do_func();

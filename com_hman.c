@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern int BW;
 
 int flag_N;
 int flag_Z;
@@ -19,19 +18,22 @@ Command cmd[] = {
 	{0177000, 0077000, "SOB", do_sob,  HAS_R | HAS_NN},
 	{0077700, 0005000, "CLR", do_clr, HAS_DD | HAS_BW},
 	
-	{0000777, 0000277, "SCC", do_scc, NO_PARAMS},
-	{0000777, 0000261, "SEC", do_sec, NO_PARAMS},
-	{0000777, 0000270, "SEN", do_sen, NO_PARAMS},
-	{0000777, 0000264, "SEZ", do_sez, NO_PARAMS},
-	{0000777, 0000262, "SEV", do_sev, NO_PARAMS},
+	{0177777, 0000277, "SCC", do_scc, NO_PARAMS},
+	{0177777, 0000261, "SEC", do_sec, NO_PARAMS},
+	{0177777, 0000270, "SEN", do_sen, NO_PARAMS},
+	{0177777, 0000264, "SEZ", do_sez, NO_PARAMS},
+	{0177777, 0000262, "SEV", do_sev, NO_PARAMS},
 	
-	{0000777, 0000257, "CCC", do_ccc, NO_PARAMS},
-	{0000777, 0000241, "CLC", do_clc, NO_PARAMS},
-	{0000777, 0000250, "CLN", do_cln, NO_PARAMS},
-	{0000777, 0000244, "CLZ", do_clz, NO_PARAMS},
-	{0000777, 0000242, "CLV", do_clv, NO_PARAMS},
+	{0177777, 0000257, "CCC", do_ccc, NO_PARAMS},
+	{0177777, 0000241, "CLC", do_clc, NO_PARAMS},
+	{0177777, 0000250, "CLN", do_cln, NO_PARAMS},
+	{0177777, 0000244, "CLZ", do_clz, NO_PARAMS},
+	{0177777, 0000242, "CLV", do_clv, NO_PARAMS},
 	
-	{0000777, 0000240, "NOP", do_nop, NO_PARAMS},
+	{0177777, 0000240, "NOP", do_nop, NO_PARAMS},
+	
+	{0177400, 0000400, "BR",  do_br,  HAS_XX},
+	{0177400, 0001400, "BEQ", do_beq, HAS_XX},
 	
 	{0000000, 0000000, "UNKNOWN", do_nothing, NO_PARAMS}
 	
@@ -54,13 +56,16 @@ void do_mov(){
 	else {
 	w_write(dd.adr, ss.val, dd.where);
 	}
-
+	
+    set_NZ(ss.val);
+	do_clv();
 }
  
  
 void do_add(){
 	w_write(dd.adr, (dd.val + ss.val) & 0xFFFF, dd.where);
-
+	
+	set_NZ(dd.val + ss.val);
 }
 
 
@@ -78,14 +83,29 @@ void do_sob(){
 }
 
 void do_clr(){
-		if(BW == B) {
-			b_write(dd.adr, 0, dd.where);
-		}
-		else {
-		w_write(dd.adr, 0, dd.where);
-		
-		}
-		
+	if(BW == B) {
+		b_write(dd.adr, 0, dd.where);
+	}
+	else {
+		w_write(dd.adr, 0, dd.where);	
+	}
+	
+	do_cln();	
+	do_sez();
+	do_clv();
+	do_clc();
+}
+
+void do_br() {
+	pc = pc + 2*XX;
+	
+}
+
+void do_beq() {
+	if(flag_Z){
+		do_br();
+	}
+	
 }
 
 

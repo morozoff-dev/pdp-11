@@ -35,6 +35,8 @@ typedef struct{
 #define HAS_NN 4
 #define HAS_R  8
 #define HAS_BW 16
+#define HAS_XX 32
+
 
 #define B 1
 #define W 0
@@ -44,7 +46,10 @@ extern byte mem[MEMSIZE];
 extern word reg[8];
 
 extern Arg ss, dd;
-extern int NN, R;
+extern int NN, R, XX;
+extern int BW;
+
+extern int flag_N, flag_Z, flag_V, flag_C;
 
 void w_write(adr a, word w, int where);
 word w_read(adr a, int where);
@@ -62,6 +67,8 @@ void do_add();
 void do_nothing();
 void do_sob();
 void do_clr();
+void do_br();
+void do_beq();
 void run();
 
 void do_scc();
@@ -75,5 +82,7 @@ void do_cln();
 void do_clz();
 void do_clv();
 void do_nop();
+
+void set_NZ(word w);
 
 void reg_print();
