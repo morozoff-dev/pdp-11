@@ -1,4 +1,3 @@
-
 #pragma once
 
 typedef  unsigned char  byte;    // 8 bit
@@ -46,8 +45,8 @@ extern byte mem[MEMSIZE];
 extern word reg[8];
 
 extern Arg ss, dd;
-extern int NN, R, XX;
-extern int BW;
+extern int nn, r, xx;
+extern int bw;
 
 extern int flag_N, flag_Z, flag_V, flag_C;
 

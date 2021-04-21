@@ -6,8 +6,8 @@
 extern Command cmd[];
 
 Arg ss, dd;
-int NN, R, XX;
-int BW = W;     // байт или слово
+int nn, r, xx;   // params
+int bw;      // работаем с байтом или словом
 
 Arg get_mr(word w){
 	Arg res;
@@ -29,12 +29,12 @@ Arg get_mr(word w){
 		case 1:   // (R3)
 			res.adr = reg[r];
 			
-			if(BW == B){
+			if(bw == B)
 				res.val = b_read(res.adr, res.where);
-			}
-			else {
-			res.val = w_read(res.adr, res.where);
-			}
+			
+			else 
+				res.val = w_read(res.adr, res.where);
+			
 			
 			printf("(R%o) ", r);
 			
@@ -43,14 +43,13 @@ Arg get_mr(word w){
 		case 2:   // (R3)+     #3
 			res.adr = reg[r];
 			
-			if(BW == B){
+			if(bw == B){
 				res.val = b_read(res.adr, res.where);
-				if(r < 6) reg[r] += 1;
-				else reg[r] += 2;
+				reg[r] += r < 6 ? 1 : 2;
 			}
 			else {
-			res.val = w_read(res.adr, res.where);
-			reg[r] += 2;
+				res.val = w_read(res.adr, res.where);
+				reg[r] += 2;
 			}
 			
 			if(r == 7){
@@ -63,8 +62,10 @@ Arg get_mr(word w){
 		case 3:
 			res.adr = w_read(reg[r], res.where);
 			
-			if(BW == B) res.val = b_read(res.adr, res.where);
-			else res.val = w_read(res.adr, res.where);
+			if(bw == B) 
+				res.val = b_read(res.adr, res.where);
+			else
+				res.val = w_read(res.adr, res.where);
 			
 			reg[r] += 2;
 			if(r == 7) {
@@ -86,7 +87,7 @@ Arg get_mr(word w){
 
 
 
-int get_R(word w){
+int get_r(word w){
 	int res;
     res = (w >> 6) & 7;
 	printf("R%d ", res);
@@ -94,7 +95,7 @@ int get_R(word w){
 	
 }
 
-int get_NN(word w){
+int get_nn(word w){
 	int res;
 	res = w & 0000077;
 	printf("%06o ", pc - res * 2);
@@ -102,7 +103,7 @@ int get_NN(word w){
 }
 
 
-int get_XX(word w){
+int get_xx(word w){
 	int res;
 	res = (byte)(w & 0377);
 	if((res >> 7) & 1){
@@ -127,7 +128,7 @@ void run(){
 			if((w & cmd[i].mask) == cmd[i].opcode){
 				printf("%s ", cmd[i].name);
 				if(cmd[i].params & HAS_BW){
-				BW = w >> 15;
+				bw = w >> 15;
 				}
 				if(cmd[i].params & HAS_SS){
 					ss = get_mr(w >> 6);
@@ -136,13 +137,13 @@ void run(){
 					dd = get_mr(w);
 				}
 				if(cmd[i].params & HAS_R){
-					R = get_R(w);
+					r = get_r(w);
 				}
 				if(cmd[i].params & HAS_NN){
-					NN = get_NN(w);
+					nn = get_nn(w);
 				}
 				if(cmd[i].params & HAS_XX){
-					XX = get_XX(w);
+					xx = get_xx(w);
 				}
 				
 				cmd[i].do_func();
