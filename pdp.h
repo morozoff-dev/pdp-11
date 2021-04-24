@@ -68,6 +68,7 @@ void do_sob();
 void do_clr();
 void do_br();
 void do_beq();
+void do_bpl();
 void run();
 
 void do_scc();

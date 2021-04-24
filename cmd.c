@@ -34,6 +34,7 @@ Command cmd[] = {
 	
 	{0177400, 0000400, "BR",  do_br,  HAS_XX},
 	{0177400, 0001400, "BEQ", do_beq, HAS_XX},
+	{0177400, 0100000, "BPL", do_bpl, HAS_XX},
 	
 	{0000000, 0000000, "UNKNOWN", do_nothing, NO_PARAMS}
 	
@@ -103,6 +104,13 @@ void do_br() {
 
 void do_beq() {
 	if(flag_Z){
+		do_br();
+	}
+	
+}
+
+void do_bpl() {
+	if(!flag_N){
 		do_br();
 	}
 	
