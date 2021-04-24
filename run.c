@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 
+
 extern Command cmd[];
 
 Arg ss, dd;
@@ -129,6 +130,7 @@ int get_xx(word w){
 
 
 void run(){
+	mem[ostat] = mem[ostat] | 128;    // устройство всегда готово 
 	pc = 01000;
 	int i;
 	while(1){

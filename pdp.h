@@ -40,6 +40,8 @@ typedef struct{
 #define B 1
 #define W 0
 
+#define ostat 0177564
+#define odata 0177566
 
 extern byte mem[MEMSIZE];
 extern word reg[8];
@@ -69,6 +71,7 @@ void do_clr();
 void do_br();
 void do_beq();
 void do_bpl();
+void do_tst();
 void run();
 
 void do_scc();

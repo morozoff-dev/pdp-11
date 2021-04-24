@@ -12,11 +12,13 @@ int flag_V;
 
 
 Command cmd[] = {
-	{0070000, 0010000, "MOV", do_mov, HAS_DD | HAS_SS | HAS_BW},
+	{0170000, 0010000, "MOV", do_mov, HAS_DD | HAS_SS | HAS_BW},
+	{0170000, 0110000, "MOVb", do_mov, HAS_DD | HAS_SS | HAS_BW},
 	{0170000, 0060000, "ADD", do_add, HAS_DD | HAS_SS},
 	{0177777, 0000000, "HALT", do_halt, NO_PARAMS},
 	{0177000, 0077000, "SOB", do_sob,  HAS_R | HAS_NN},
-	{0077700, 0005000, "CLR", do_clr, HAS_DD | HAS_BW},
+	{0177700, 0105000, "CLR", do_clr, HAS_DD | HAS_BW},
+	{0177700, 0105000, "CLR", do_clr, HAS_DD | HAS_BW},
 	
 	{0177777, 0000277, "SCC", do_scc, NO_PARAMS},
 	{0177777, 0000261, "SEC", do_sec, NO_PARAMS},
@@ -35,6 +37,9 @@ Command cmd[] = {
 	{0177400, 0000400, "BR",  do_br,  HAS_XX},
 	{0177400, 0001400, "BEQ", do_beq, HAS_XX},
 	{0177400, 0100000, "BPL", do_bpl, HAS_XX},
+	
+	{0177700, 0005700, "TST", do_tst, HAS_DD | HAS_BW},
+	{0177700, 0105700, "TSTb", do_tst, HAS_DD | HAS_BW},
 	
 	{0000000, 0000000, "UNKNOWN", do_nothing, NO_PARAMS}
 	
@@ -115,6 +120,14 @@ void do_bpl() {
 	}
 	
 }
+
+void do_tst() {
+	set_NZ((word)dd.val);
+	do_clv();
+	do_clc();
+}
+
+
 
 
 
