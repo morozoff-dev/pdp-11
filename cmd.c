@@ -17,8 +17,8 @@ Command cmd[] = {
 	{0170000, 0060000, "ADD", do_add, HAS_DD | HAS_SS},
 	{0177777, 0000000, "HALT", do_halt, NO_PARAMS},
 	{0177000, 0077000, "SOB", do_sob,  HAS_R | HAS_NN},
-	{0177700, 0105000, "CLR", do_clr, HAS_DD | HAS_BW},
-	{0177700, 0105000, "CLR", do_clr, HAS_DD | HAS_BW},
+	{0177700, 0005000, "CLR", do_clr, HAS_DD | HAS_BW},
+	{0177700, 0105000, "CLRb", do_clr, HAS_DD | HAS_BW},
 	
 	{0177777, 0000277, "SCC", do_scc, NO_PARAMS},
 	{0177777, 0000261, "SEC", do_sec, NO_PARAMS},
