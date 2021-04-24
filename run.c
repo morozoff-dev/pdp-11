@@ -74,8 +74,21 @@ Arg get_mr(word w){
 			else {
 				printf("@(R%o)+ ", r);
 			}
-
 			break;
+		case 4: 
+			if(bw == B) {
+				reg[r] -= r < 6 ? 1 : 2;
+				res.adr = reg[r];
+				res.val = b_read(res.adr, res.where);
+			}
+			else {
+				reg[r] -= 2;
+				res.adr = reg[r];
+				res.val = w_read(res.adr, res.where);
+			}
+			printf("-(R%d) ", r);
+			break;
+			
 		default: 
 			fprintf(stderr, "Mode %o NOT IMPLEMENTED YET!\n", mode);
 			exit(1);
@@ -152,6 +165,11 @@ void run(){
 			}
 		
 		
+		}
+		
+		if(pc < 8) {
+			printf("Error: system memory has changed \n");
+			exit(1);
 		}
 		
 	}
