@@ -25,6 +25,12 @@ typedef struct{
 #define MEMSIZE (64*1024)
 #define pc reg[7]
 
+#define Error 0
+#define Info 2
+#define Trace 6
+#define Debug 10
+
+
 #define REG 0
 #define MEM 1
 
@@ -35,7 +41,6 @@ typedef struct{
 #define HAS_R  8
 #define HAS_BW 16
 #define HAS_XX 32
-
 
 #define B 1
 #define W 0
@@ -52,6 +57,8 @@ extern int bw;
 
 extern int flag_N, flag_Z, flag_V, flag_C;
 
+extern int options;
+
 void w_write(adr a, word w, int where);
 word w_read(adr a, int where);
 void b_write(adr a, byte b, int where);
@@ -61,6 +68,7 @@ void test_mem();
 
 void load_file();
 void mem_dump(adr start, word n);
+void logg(int curr_opt, const char * fmt, ...);
 
 void do_halt();
 void do_mov();
@@ -73,6 +81,7 @@ void do_beq();
 void do_bpl();
 void do_tst();
 void run();
+
 
 void do_scc();
 void do_sec();

@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 
-
 extern Command cmd[];
 
 Arg ss, dd;
@@ -25,7 +24,7 @@ Arg get_mr(word w){
 		case 0:   // R3
 			res.adr = r;
 			res.val = reg[r];
-			printf("R%o ", r);
+			logg(Trace, "R%o ", r);
 			break;
 		case 1:   // (R3)
 			res.adr = reg[r];
@@ -37,7 +36,7 @@ Arg get_mr(word w){
 				res.val = w_read(res.adr, res.where);
 			
 			
-			printf("(R%o) ", r);
+			logg(Trace, "(R%o) ", r);
 			
 			break;
 			
@@ -54,10 +53,10 @@ Arg get_mr(word w){
 			}
 			
 			if(r == 7){
-				printf("#%o ", res.val);
+				logg(Trace, "#%o ", res.val);
 			}
 			else {
-				printf("(R%o)+ ", r);
+				logg(Trace, "(R%o)+ ", r);
 			}
 			break;
 		case 3:
@@ -70,10 +69,10 @@ Arg get_mr(word w){
 			
 			reg[r] += 2;
 			if(r == 7) {
-				printf("@#%o ", res.adr);
+				logg(Trace, "@#%o ", res.adr);
 			}
 			else {
-				printf("@(R%o)+ ", r);
+				logg(Trace, "@(R%o)+ ", r);
 			}
 			break;
 		case 4: 
@@ -87,7 +86,7 @@ Arg get_mr(word w){
 				res.adr = reg[r];
 				res.val = w_read(res.adr, res.where);
 			}
-			printf("-(R%d) ", r);
+			logg(Trace, "-(R%d) ", r);
 			break;
 			
 		default: 
@@ -104,7 +103,7 @@ Arg get_mr(word w){
 int get_r(word w){
 	int res;
     res = (w >> 6) & 7;
-	printf("R%d ", res);
+	logg(Trace, "R%d ", res);
 	return res;
 	
 }
@@ -112,7 +111,7 @@ int get_r(word w){
 int get_nn(word w){
 	int res;
 	res = w & 0000077;
-	printf("%06o ", pc - res * 2);
+	logg(Trace, "%06o ", pc - res * 2);
 	return res;
 }
 
@@ -123,7 +122,7 @@ int get_xx(word w){
 	if((res >> 7) & 1){
 		res = res - 000400;
 	}
-	printf("%06o ", pc + res * 2);
+	logg(Trace, "%06o ", pc + res * 2);
 	
 	return res;
 }
@@ -135,13 +134,13 @@ void run(){
 	int i;
 	while(1){
 		word w = w_read(pc, MEM);
-		printf("%06o %06o: ", pc, w);
+		logg(Trace, "%06o %06o: ", pc, w);
 		pc += 2;
 		 
 		for(i = 0; ; i++) {
 			
 			if((w & cmd[i].mask) == cmd[i].opcode){
-				printf("%s ", cmd[i].name);
+				logg(Trace, "%s ", cmd[i].name);
 				if(cmd[i].params & HAS_BW){
 				bw = w >> 15;
 				}
@@ -162,7 +161,7 @@ void run(){
 				}
 				
 				cmd[i].do_func();
-				printf("\n");
+				logg(Trace, "\n");
 				break;
 			}
 		
@@ -170,7 +169,7 @@ void run(){
 		}
 		
 		if(pc < 8) {
-			printf("Error: system memory has changed \n");
+			logg(Error, "Error: system memory has changed \n");
 			exit(1);
 		}
 		

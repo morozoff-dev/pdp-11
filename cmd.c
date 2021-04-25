@@ -47,7 +47,8 @@ Command cmd[] = {
 
 
 void do_halt(){
-	printf("THE END!!!\n");
+	logg(Trace, "THE END!!!");
+	printf("\n");
 	reg_print();
 	exit(0);
 }
@@ -72,6 +73,7 @@ void do_add(){
 	w_write(dd.adr, (dd.val + ss.val) & 0xFFFF, dd.where);
 	
 	set_NZ(dd.val + ss.val);
+	flag_C = ((int)dd.val + (int)ss.val) & 0x10000;
 }
 
 
@@ -191,9 +193,9 @@ void do_nop() {
 
 void reg_print(){
 	int i;
-	printf("Registers: \n");
+	logg(Info, "Registers: \n");
 	for(i = 0; i < 8; i++){
-		printf("%o \n", reg[i]);
+		logg(Info, "%o \n", reg[i]);
 	}
 	
 }
@@ -205,3 +207,4 @@ void set_NZ(word w){
 	flag_N = (w >> (bw == B ? 7 : 15)) & 1;
 	
 }
+

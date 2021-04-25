@@ -2,22 +2,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdarg.h>
+#include <unistd.h>
 
+
+int options;
 
 
 int main(int argc, char * argv[]) {
 	test_mem();
 	
 	if(argc == 1){
-		printf("Usage: < executable file >  < input_file > \n");
+		printf("Usage: < executable file >  < input_file > [-t] \n");
 		return 0;
 	}
-	else if (argc == 2){
+	else if (argc > 1){
 		load_file(argv[1]);
 	}
 	
-	run();
 	
+	char * opts = "t"; 
+	int opt; 
+	 while((opt = getopt(argc, argv, opts)) != -1) { 
+        switch(opt) {
+            case 't': 
+                options = options | Trace;
+                break; 			
+        }						//  возможно попозже добавлю больше опций
+    }
+	
+	
+	run();
+
 	return 0;
 }
 
@@ -51,4 +67,14 @@ void mem_dump(adr start, word n){
 	}
 }
 
+
+void logg(int curr_opt, const char * fmt, ...) {
+	if(!(options & curr_opt))
+		return;
+	va_list ap;
+	va_start(ap, fmt);
+	vprintf(fmt, ap);
+	va_end(ap);
+	
+}
 
