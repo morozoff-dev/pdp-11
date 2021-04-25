@@ -21,13 +21,16 @@ int main(int argc, char * argv[]) {
 	}
 	
 	
-	char * opts = "t"; 
+	char * opts = "ti"; 
 	int opt; 
 	 while((opt = getopt(argc, argv, opts)) != -1) { 
         switch(opt) {
             case 't': 
                 options = options | Trace;
-                break; 			
+                break; 	
+			case 'i':
+				options = options | Info;
+				break;
         }						//  возможно попозже добавлю больше опций
     }
 	
@@ -69,7 +72,7 @@ void mem_dump(adr start, word n){
 
 
 void logg(int curr_opt, const char * fmt, ...) {
-	if(!(options & curr_opt))
+	if((options & curr_opt) != curr_opt)
 		return;
 	va_list ap;
 	va_start(ap, fmt);
