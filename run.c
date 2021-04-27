@@ -13,6 +13,8 @@ Arg get_mr(word w){
 	Arg res;
 	int r = w & 7;
 	int mode = (w >> 3) & 7;
+	word sdv;   // для 6й моды
+	
 	if(mode == 0) {
 		res.where = REG;
 	}
@@ -26,6 +28,7 @@ Arg get_mr(word w){
 			res.val = reg[r];
 			logg(Trace, "R%o ", r);
 			break;
+			
 		case 1:   // (R3)
 			res.adr = reg[r];
 			
@@ -37,7 +40,6 @@ Arg get_mr(word w){
 			
 			
 			logg(Trace, "(R%o) ", r);
-			
 			break;
 			
 		case 2:   // (R3)+     #3
@@ -59,6 +61,7 @@ Arg get_mr(word w){
 				logg(Trace, "(R%o)+ ", r);
 			}
 			break;
+			
 		case 3:
 			res.adr = w_read(reg[r], res.where);
 			
@@ -75,6 +78,7 @@ Arg get_mr(word w){
 				logg(Trace, "@(R%o)+ ", r);
 			}
 			break;
+			
 		case 4: 
 			if(bw == B) {
 				reg[r] -= r < 6 ? 1 : 2;
@@ -87,6 +91,22 @@ Arg get_mr(word w){
 				res.val = w_read(res.adr, res.where);
 			}
 			logg(Trace, "-(R%d) ", r);
+			break;
+			
+		case 6: 
+			sdv = w_read(pc, res.where);
+			pc += 2;
+			res.adr = reg[r] + sdv;
+			if(bw == B)
+				res.val = b_read(res.adr, res.where);
+			else 
+				res.val = w_read(res.adr, res.where);
+			
+			if(r == 7)
+				logg(Trace, "%o ", res.adr);
+			else 
+				logg(Trace, "%o(R%o)", sdv, r);
+				
 			break;
 			
 		default: 

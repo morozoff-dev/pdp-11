@@ -18,7 +18,7 @@ typedef struct {
 typedef struct{
 	word val;  // значение аргумента 
 	word adr;  // адрес аргумента
-	int where; // куда писать: в reg или mem
+	int where; // адрес в какой памяти: в reg или mem
 	
 } Arg;
 
