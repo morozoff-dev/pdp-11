@@ -167,6 +167,9 @@ void run(){
 				if(cmd[i].params & HAS_R){
 					r = get_r(w);
 				}
+				if(cmd[i].params & HAS_Rfirst){
+					r = get_r(w << 6);
+				}
 				if(cmd[i].params & HAS_SS){
 					ss = get_mr(w >> 6);
 				}

@@ -40,6 +40,7 @@ Command cmd[] = {
 	{0177700, 0005700, "TST", do_tst, HAS_DD | HAS_BW},
 	{0177700, 0105700, "TSTb", do_tst, HAS_DD | HAS_BW},
 	{0177000, 0004000, "JSR", do_jsr, HAS_R | HAS_DD},
+	{0177770, 0000200, "RTS", do_rts, HAS_Rfirst},
 	
 	{0000000, 0000000, "UNKNOWN", do_nothing, NO_PARAMS}
 	
@@ -134,15 +135,21 @@ void do_tst() {
 void do_jsr() {
 	word temp = dd.adr;
 	
-	sp -= 2; 								//  push
-	w_write(sp, reg[r], dd.where);			// 
+	sp -= 2; 								//  push(sp)
+	w_write(sp, reg[r], MEM);				// 
 	
 	reg[r] = pc;
 	pc = temp; 
 	
 }
 
-
+void do_rts() {
+	pc = reg[r];
+	
+	reg[r] = w_read(sp, MEM);				// pop(sp)
+	sp += 2;								// 
+	
+}
 
 
 

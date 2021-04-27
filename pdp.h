@@ -42,6 +42,8 @@ typedef struct{
 #define HAS_R  8
 #define HAS_BW 16
 #define HAS_XX 32
+#define HAS_Rfirst 64
+
 
 #define B 1
 #define W 0
@@ -82,6 +84,7 @@ void do_beq();
 void do_bpl();
 void do_tst();
 void do_jsr();
+void do_rts();
 void run();
 
 
