@@ -164,14 +164,14 @@ void run(){
 				if(cmd[i].params & HAS_BW){
 				bw = w >> 15;
 				}
+				if(cmd[i].params & HAS_R){
+					r = get_r(w);
+				}
 				if(cmd[i].params & HAS_SS){
 					ss = get_mr(w >> 6);
 				}
 				if(cmd[i].params & HAS_DD){
 					dd = get_mr(w);
-				}
-				if(cmd[i].params & HAS_R){
-					r = get_r(w);
 				}
 				if(cmd[i].params & HAS_NN){
 					nn = get_nn(w);

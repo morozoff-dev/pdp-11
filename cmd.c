@@ -37,9 +37,9 @@ Command cmd[] = {
 	{0177400, 0000400, "BR",  do_br,  HAS_XX},
 	{0177400, 0001400, "BEQ", do_beq, HAS_XX},
 	{0177400, 0100000, "BPL", do_bpl, HAS_XX},
-	
 	{0177700, 0005700, "TST", do_tst, HAS_DD | HAS_BW},
 	{0177700, 0105700, "TSTb", do_tst, HAS_DD | HAS_BW},
+	{0177000, 0004000, "JSR", do_jsr, HAS_R | HAS_DD},
 	
 	{0000000, 0000000, "UNKNOWN", do_nothing, NO_PARAMS}
 	
@@ -57,11 +57,13 @@ void do_halt(){
 void do_mov(){
 	if(bw == B){
 		int zn = (ss.val >> 7); 
-		if((dd.where == REG) && (zn == 1)) w_write(dd.adr, ss.val | 0xFF00, dd.where);
-		else b_write(dd.adr, ss.val, dd.where);
+		if((dd.where == REG) && (zn == 1)) 
+			w_write(dd.adr, ss.val | 0xFF00, dd.where);
+		else 
+			b_write(dd.adr, ss.val, dd.where);
 	}
 	else {
-	w_write(dd.adr, ss.val, dd.where);
+		w_write(dd.adr, ss.val, dd.where);
 	}
 	
     set_NZ(ss.val);
@@ -127,6 +129,17 @@ void do_tst() {
 	set_NZ((word)dd.val);
 	do_clv();
 	do_clc();
+}
+
+void do_jsr() {
+	word temp = dd.adr;
+	
+	sp -= 2; 								//  push
+	w_write(sp, reg[r], dd.where);			// 
+	
+	reg[r] = pc;
+	pc = temp; 
+	
 }
 
 

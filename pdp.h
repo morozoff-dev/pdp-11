@@ -24,6 +24,7 @@ typedef struct{
 
 #define MEMSIZE (64*1024)
 #define pc reg[7]
+#define sp reg[6]
 
 #define Error 0
 #define Info 2
@@ -80,6 +81,7 @@ void do_br();
 void do_beq();
 void do_bpl();
 void do_tst();
+void do_jsr();
 void run();
 
 
